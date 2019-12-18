@@ -17,7 +17,6 @@ class BurgerBuilder extends Component {
   //     this.state = {...}
   // }
   state = {
-    buyable: false,
     buying: false,
     loading: false,
     error: false
@@ -36,13 +35,13 @@ class BurgerBuilder extends Component {
 
   updateBuyableState(ingredients) {
     const sum = Object.keys(ingredients)
-      .map(igKey => {
-        return ingredients[igKey];
+      .map(ingredientsKey => {
+        return ingredients[ingredientsKey];
       })
-      .reduce((sum, el) => {
-        return sum + el;
+      .reduce((sum, element) => {
+        return sum + element;
       }, 0);
-    this.setState({ buyable: sum > 0 });
+    return sum > 0
   }
 
   buyHandler = () => {
@@ -54,21 +53,7 @@ class BurgerBuilder extends Component {
   };
 
   buyContinueHandler = () => {
-
-    const queryParams = [];
-    for (let i in this.props.ingredients) {
-      queryParams.push(
-        `${encodeURIComponent(i)}=${encodeURIComponent(
-          this.props.ingredients[i]
-        )}`
-      );
-    }
-    queryParams.push(`price=${this.props.price}`)
-    const queryString = queryParams.join("&");
-    this.props.history.push({
-      pathname: "/checkout",
-      search: "?" + queryString
-    });
+    this.props.history.push('/checkout');
   };
 
   render() {
@@ -92,7 +77,7 @@ class BurgerBuilder extends Component {
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
-            buyable={this.state.buyable}
+            buyable={this.updateBuyableState(this.props.ingredients)}
             ordered={this.buyHandler}
             price={this.props.price}
           />
