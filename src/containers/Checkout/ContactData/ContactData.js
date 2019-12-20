@@ -193,7 +193,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData)) }
+    return { onOrderBurger: (orderData) => dispatch(actions.buyBurger(orderData)) }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
