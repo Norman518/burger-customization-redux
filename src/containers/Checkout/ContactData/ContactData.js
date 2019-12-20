@@ -81,11 +81,19 @@ class ContactData extends Component {
                 elementType: 'select',
                 elementConfig: {
                     options: [
-                        { value: 'fastest', displayValue: 'Fastest' },
-                        { value: 'cheapest', displayValue: 'Cheapest' }
+                        {
+                            value: 'fastest',
+                            displayValue: 'Fastest'
+                        },
+                        {
+                            value: 'cheapest',
+                            displayValue: 'Cheapest'
+                        }
                     ]
                 },
-                value: 'fastest', validation: {}, valid: true
+                value: 'fastest',
+                validation: {},
+                valid: true
             }
         },
         formIsValid: false,
@@ -178,9 +186,9 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        price: state.totalPrice,
-        loading: state.loading
+        ingredients: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
     }
 }
 
