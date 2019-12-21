@@ -1,0 +1,10 @@
+/build
+/config
+/node_modules
+/public
+/scripts
+package-lock.json
+package.json
+README.md
+/src/registerServiceWorker.js
+/src/App.test.js
