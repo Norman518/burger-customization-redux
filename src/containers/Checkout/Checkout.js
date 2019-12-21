@@ -6,41 +6,39 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component {
+  checkoutCancelledHandler = () => {
+    this.props.history.goBack();
+  };
 
-    checkoutCancelledHandler = () => {
-        this.props.history.goBack();
-    }
+  checkoutContinuedHandler = () => {
+    this.props.history.replace('/checkout/contact-data');
+  };
 
-    checkoutContinuedHandler = () => {
-        this.props.history.replace( '/checkout/contact-data' );
+  render() {
+    let summary = <Redirect to="/" />;
+    if (this.props.ings) {
+      const boughtRedirect = this.props.bought ? <Redirect to="/" /> : null;
+      summary = (
+        <div>
+          {boughtRedirect}
+          <CheckoutSummary
+            ingredients={this.props.ings}
+            checkoutCancelled={this.checkoutCancelledHandler}
+            checkoutContinued={this.checkoutContinuedHandler}
+          />
+          <Route path={this.props.match.path + '/contact-data'} component={ContactData} />
+        </div>
+      );
     }
-
-    render () {
-        let summary = <Redirect to="/" />
-        if ( this.props.ings ) {
-            const boughtRedirect = this.props.bought ? <Redirect to="/"/> : null;
-            summary = (
-                <div>
-                    {boughtRedirect}
-                    <CheckoutSummary
-                        ingredients={this.props.ings}
-                        checkoutCancelled={this.checkoutCancelledHandler}
-                        checkoutContinued={this.checkoutContinuedHandler} />
-                    <Route
-                        path={this.props.match.path + '/contact-data'}
-                        component={ContactData} />
-                </div>
-            );
-        }
-        return summary;
-    }
+    return summary;
+  }
 }
 
 const mapStateToProps = state => {
-    return {
-        ings: state.burgerBuilder.ingredients,
-        bought: state.order.bought
-    }
+  return {
+    ings: state.burgerBuilder.ingredients,
+    bought: state.order.bought,
+  };
 };
 
-export default connect( mapStateToProps )( Checkout );
+export default connect(mapStateToProps)(Checkout);

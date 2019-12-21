@@ -9,9 +9,8 @@
   padding: 10px 0;
 }
 
-
 .OrderButton {
-  background-color: #F8DE7E;
+  background-color: #f8de7e;
   outline: none;
   cursor: pointer;
   border: 1px solid #966909;
@@ -22,14 +21,15 @@
   box-shadow: 2px 2px 2px #966909;
 }
 
-.OrderButton:hover, .OrderButton:active {
+.OrderButton:hover,
+.OrderButton:active {
   background-color: #d4eee2;
   border: 1px solid #966909;
   color: #966909;
 }
 
 .OrderButton:disabled {
-  background-color: #C7C6C6;
+  background-color: #c7c6c6;
   cursor: not-allowed;
   border: 1px solid #ccc;
   color: #888888;
@@ -41,12 +41,12 @@
 
 @keyframes enable {
   0% {
-      transform: scale(1);
+    transform: scale(1);
   }
   60% {
-      transform: scale(1.1);
+    transform: scale(1.1);
   }
   100% {
-      transform: scale(1);
+    transform: scale(1);
   }
 }
