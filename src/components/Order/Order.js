@@ -12,7 +12,7 @@ const order = props => {
     });
   }
 
-  const ingredientOutput = ingredients.map(ig => {
+  const ingredientOutput = ingredients.map(ingredient => {
     return (
       <span
         style={{
@@ -22,9 +22,9 @@ const order = props => {
           border: '1px solid #ccc',
           padding: '5px',
         }}
-        key={ig.name}
+        key={ingredient.name}
       >
-        {ig.name} ({ig.amount})
+        {ingredient.name} ({ingredient.amount})
       </span>
     );
   });

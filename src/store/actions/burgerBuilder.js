@@ -18,7 +18,7 @@ export const removeIngredient = name => {
 export const setIngredients = ingredients => {
   return {
     type: actionTypes.SET_INGREDIENTS,
-    ingredients: ingredients,
+    ingredients,
   };
 };
 
@@ -35,7 +35,7 @@ export const initIngredients = () => {
       .then(response => {
         dispatch(setIngredients(response.data));
       })
-      .catch(error => {
+      .catch(() => {
         dispatch(fetchIngredientsFailed());
       });
   };
