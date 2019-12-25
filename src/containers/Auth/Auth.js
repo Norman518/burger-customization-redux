@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classes from './Auth.css';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
 
 class Auth extends Component {
@@ -110,7 +111,7 @@ class Auth extends Component {
       });
     }
 
-    const form = formElementsArray.map(formElement => (
+    let form = formElementsArray.map(formElement => (
       <Input
         key={formElement.id}
         elementType={formElement.config.elementType}
@@ -123,11 +124,31 @@ class Auth extends Component {
       />
     ));
 
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null;
+    if (this.props.error) {
+      let message = this.props.error;
+      if (message === 'INVALID_PASSWORD') {
+        message = 'Password is invalid.';
+      } else if (message.includes('WEAK_PASSWORD')) {
+        message = 'Password should be at least 6 characters.';
+      } else if (message === 'EMAIL_EXISTS') {
+        message = 'Email already exists.';
+      } else if (message.includes('TOO_MANY_ATTEMPTS_TRY_LATER')) {
+        message = 'Too many unsuccessful login attempts. Please try again later.';
+      }
+      errorMessage = <p>{message}</p>;
+    }
+
     return (
       <div className={classes.Auth}>
+        {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
-          <Button buttonType="Success">SUBMIT</Button>
+          <Button buttonType="Success">{this.state.isSignup ? 'SIGN UP' : 'SIGN IN'}</Button>
         </form>
         <Button clicked={this.switchAuthModeHandler} buttonType="Fail">
           SWITCH TO {this.state.isSignup ? 'SIGN IN' : 'SIGN UP'}
@@ -137,10 +158,17 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
