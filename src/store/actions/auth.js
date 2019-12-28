@@ -23,6 +23,9 @@ export const authFail = error => {
 };
 
 export const logout = () => {
+  localStorage.removeItem('burgerToken');
+  localStorage.removeItem('burgerExpirationDate');
+  localStorage.removeItem('burgerLocalID');
   return { type: actionTypes.AUTH_LOGOUT };
 };
 
@@ -52,6 +55,11 @@ export const auth = (email, password, isSignup) => {
       .post(url, authData)
       .then(response => {
         const data = response.data;
+        const expirationDate = new Date(new Date().getTime() + data.expiresIn * 1000);
+        localStorage.setItem('burgerToken', data.idToken);
+        localStorage.setItem('burgerExpirationDate', expirationDate);
+        localStorage.setItem('burgerToken', data.idToken);
+        localStorage.setItem('burgerLocalID', data.localId);
         dispatch(authSuccess(data.idToken, data.localId));
         dispatch(checkAuthTimeout(data.expiresIn));
       })
@@ -65,5 +73,23 @@ export const setAuthRedirectPath = path => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
     path,
+  };
+};
+
+export const authCheckState = () => {
+  return dispatch => {
+    const token = localStorage.getItem('burgerToken');
+    if (!token) {
+      dispatch(logout());
+    } else {
+      const expirationDate = new Date(localStorage.getItem('burgerExpirationDate'));
+      if (expirationDate > new Date()) {
+        const localID = localStorage.getItem('burgerLocalID');
+        dispatch(authSuccess(token, localID));
+        dispatch(checkAuthTimeout(expirationDate.getSeconds() - new Date().getSeconds()));
+      } else {
+        dispatch(logout());
+      }
+    }
   };
 };
