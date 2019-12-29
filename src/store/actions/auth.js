@@ -86,7 +86,8 @@ export const authCheckState = () => {
       if (expirationDate > new Date()) {
         const localID = localStorage.getItem('burgerLocalID');
         dispatch(authSuccess(token, localID));
-        dispatch(checkAuthTimeout(expirationDate.getSeconds() - new Date().getSeconds()));
+        const timeout = (expirationDate.getTime() - new Date().getTime()) / 1000
+        dispatch(checkAuthTimeout(timeout))
       } else {
         dispatch(logout());
       }
