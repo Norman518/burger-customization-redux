@@ -108,6 +108,7 @@ class ContactData extends Component {
       ingredients: this.props.ingredients,
       price: this.props.price,
       orderData: formData,
+      localID: this.props.localID,
     };
 
     this.props.onOrderBurger(order, this.props.token);
@@ -160,7 +161,7 @@ class ContactData extends Component {
     updatedOrderForm[inputIdentifier] = updatedFormElement;
 
     let formIsValid = true;
-    for (let inputIdentifier in updatedOrderForm) {
+    for (const inputIdentifier in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
     }
     this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
@@ -211,6 +212,7 @@ const mapStateToProps = state => {
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     token: state.auth.token,
+    localID: state.auth.localID,
   };
 };
 
